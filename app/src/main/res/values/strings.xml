@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SpeakUpKE</string>
+    <string name="speakuplogo">SpeakUpLogo</string>
+    <string name="hint_mobile_number">Mobile Number</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_forgot_your_password">forgot your password?</string>
+    <string name="hint_login">Login</string>
+    <string name="hint_sign_up">Sign Up</string>
+    <string name="hint_report">Report</string>
+    <string name="hint_crime_description">Crime Description</string>
+    <string name="hint_crime_category">Crime Category</string>
+    <string name="google_maps_key">AIzaSyD5wRAkFAxdEN4IoN4ihwwV1ttBLWPlHc4</string>
+</resources>
