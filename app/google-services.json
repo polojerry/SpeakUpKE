@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "627905509182",
+    "firebase_url": "https://speakupke-d6b5a.firebaseio.com",
+    "project_id": "speakupke-d6b5a",
+    "storage_bucket": "speakupke-d6b5a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627905509182:android:6970338ded42220b",
+        "android_client_info": {
+          "package_name": "com.polotechnologies.speakupke"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "627905509182-bh8j3o6tc7ho6pkknf8oft0smdbflj9i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.polotechnologies.speakupke",
+            "certificate_hash": "9b9b269fbad5c9c2af70acfa23c70a742ed8bfb2"
+          }
+        },
+        {
+          "client_id": "627905509182-3vqsivsfqnvush2afj03mq533q95f8hb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcGkmGl4_ZC7FtcwX1EfGYNOtdb76AGvs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "627905509182-3vqsivsfqnvush2afj03mq533q95f8hb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

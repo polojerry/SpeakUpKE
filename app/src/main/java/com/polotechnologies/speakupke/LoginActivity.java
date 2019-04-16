@@ -1,15 +1,33 @@
 package com.polotechnologies.speakupke;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
     Button mLogin;
     Button mSignUp;
+
+    TextInputEditText mPhoneNumber;
+    TextInputEditText mPassword;
+
+    final int RC_SIGN_UP = 1001;
+    final int RC_SIGN_IN = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,22 +36,154 @@ public class LoginActivity extends AppCompatActivity {
 
         mLogin = findViewById(R.id.login_button);
         mSignUp = findViewById(R.id.sign_up_button);
+        mPhoneNumber = findViewById(R.id.login_mobile_number);
+        mPassword= findViewById(R.id.login_password);
+
 
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openMainActivity = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(openMainActivity);
+                //signIn();
+                getUserValues();
             }
         });
 
         mSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openSignUpActivity = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(openSignUpActivity);
+                signUp();
             }
         });
+
+    }
+
+    private void getUserValues() {
+
+        if (Objects.requireNonNull(mPhoneNumber.getText()).toString().isEmpty()){
+            mPhoneNumber.setError("Required");
+            return;
+        }
+        if (Objects.requireNonNull(mPassword.getText()).toString().isEmpty()){
+            mPassword.setError("Required");
+            return;
+        }
+
+        String userNumber = mPhoneNumber.getText().toString().trim();
+        String userPassword = mPassword.getText().toString().trim();
+
+        signUserIn(userNumber, userPassword);
+
+    }
+
+    private void signUserIn(String userNumber, String userPassword) {
+
+        if (userNumber.equals("+254790689212") && userPassword.equals("jeremiahPolo")){
+            Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
+            Intent openMainActivity = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(openMainActivity);
+            finish();
+
+        }else if (userNumber.equals("+254711339824") && userPassword.equals("jeremiah")){
+            Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
+            Intent openMainActivity = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(openMainActivity);
+            finish();
+        }else{
+            Toast.makeText(this, "Phone Number/ Password Incorrect", Toast.LENGTH_SHORT).show();
+            mPhoneNumber.setText("");
+            mPhoneNumber.requestFocus();
+            mPassword.setText("");
+        }
+    }
+
+
+    private void signUp() {
+
+        // Choose authentication providers
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.PhoneBuilder().build());
+
+        // Create and launch sign-in intent
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_UP);
+    }
+
+    /*
+    private void signIn() {
+
+        // Choose authentication providers
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.PhoneBuilder().build());
+
+        // Create and launch sign-in intent
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
+    }
+    */
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IdpResponse response = IdpResponse.fromResultIntent(data);
+
+        switch (requestCode) {
+            case RC_SIGN_UP:
+
+                if (resultCode == RESULT_OK) {
+                    // Successfully signed in
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    Intent openSignUpActivity = new Intent(LoginActivity.this, SignUpActivity.class);
+                    openSignUpActivity.putExtra("uId", user.getUid());
+                    startActivity(openSignUpActivity);
+                    // ...
+                } else {
+                    // Sign in failed. If response is null the user canceled the
+                    // sign-in flow using the back button. Otherwise check
+                    // response.getError().getErrorCode() and handle the error.
+                    // ...
+
+                    if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
+                        Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Cancelled by User", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+
+                /*
+            case RC_SIGN_IN:
+
+                if (resultCode == RESULT_OK) {
+                    // Successfully signed in
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    Intent openMainActivity = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(openMainActivity);
+                    // ...
+                } else {
+                    // Sign in failed. If response is null the user canceled the
+                    // sign-in flow using the back button. Otherwise check
+                    // response.getError().getErrorCode() and handle the error.
+                    // ...
+
+                    if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
+                        Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Cancelled by User", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+                */
+        }
 
     }
 }

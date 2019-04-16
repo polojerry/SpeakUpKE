@@ -1,26 +1,45 @@
 package com.polotechnologies.speakupke;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-public class ReportingActivity extends AppCompatActivity implements OnMapReadyCallback {
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.polotechnologies.speakupke.DataModels.ReportingModel;
+
+public class ReportingActivity extends AppCompatActivity implements OnMapReadyCallback{
 
     TextInputEditText mCrime;
     TextInputEditText mCrimeDescription;
+    Button reportButton;
+    ProgressBar reportingProgressBar;
 
-    LatLng latitudeLongitude;
-
+    Double mLongitude;
+    Double mlatitude;
     private MapView mMapView;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
 
@@ -29,22 +48,69 @@ public class ReportingActivity extends AppCompatActivity implements OnMapReadyCa
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted = false;
 
+    DatabaseReference mDatabaseReference;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reporting);
 
-        mCrime = (TextInputEditText) findViewById(R.id.crime_category) ;
-        mCrimeDescription= (TextInputEditText) findViewById(R.id.crime_description) ;
+        mCrime = (TextInputEditText) findViewById(R.id.crime_category);
+        mCrimeDescription = (TextInputEditText) findViewById(R.id.crime_description);
+        reportButton = findViewById(R.id.report_button);
+        reportingProgressBar = findViewById(R.id.reportingProgressBar);
 
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("crimesReported");
+        mAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
-        String crime = intent.getStringExtra("crime");
+        final String crime = intent.getStringExtra("crime");
         mCrime.setText(crime);
 
         getLocationPermission();
         initGoogleMap(savedInstanceState);
+
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCrimeDescription.getText().toString().isEmpty()){
+                    mCrimeDescription.setError("Required Field");
+                    return;
+                }
+                reportingProgressBar.setVisibility(View.VISIBLE);
+                reportCrime(crime);
+            }
+        });
+    }
+
+    private void reportCrime(String crimeCategory) {
+        String crime = crimeCategory;
+        String description = mCrimeDescription.getText().toString().trim();
+        String id = mDatabaseReference.push().getKey();
+
+        ReportingModel reportingModel = new ReportingModel(
+                crime,
+                description,
+                mLongitude,
+                mlatitude
+        );
+
+        mDatabaseReference.child(id).setValue(reportingModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                reportingProgressBar.setVisibility(View.GONE);
+                Toast.makeText(ReportingActivity.this, "Successfully Reported", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                reportingProgressBar.setVisibility(View.GONE);
+                Toast.makeText(ReportingActivity.this, "Failed, Try Again Later", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
 
     private void initGoogleMap(Bundle savedInstanceState) {
@@ -92,13 +158,27 @@ public class ReportingActivity extends AppCompatActivity implements OnMapReadyCa
         mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.isBuildingsEnabled();
 
-        mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
-            public void onMapClick(LatLng latLng) {
-                latitudeLongitude = latLng;
+            public boolean onMyLocationButtonClick() {
+                LocationManager locationManager = (LocationManager)
+                        getSystemService(Context.LOCATION_SERVICE);
+                Criteria criteria = new Criteria();
 
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latLng.latitude, latLng.longitude)).title("Marker"));
+                if (ActivityCompat.checkSelfPermission(ReportingActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ReportingActivity.this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    getLocationPermission();
+                    return true;
+                }
+                Location location = locationManager.getLastKnownLocation(locationManager
+                        .getBestProvider(criteria, false));
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
 
+                mLongitude = longitude;
+                mlatitude = latitude;
+                return false;
             }
         });
     }
@@ -158,4 +238,5 @@ public class ReportingActivity extends AppCompatActivity implements OnMapReadyCa
         super.onLowMemory();
         mMapView.onLowMemory();
     }
+
 }

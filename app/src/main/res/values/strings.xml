@@ -10,4 +10,5 @@
     <string name="hint_crime_description">Crime Description</string>
     <string name="hint_crime_category">Crime Category</string>
     <string name="google_maps_key">AIzaSyD5wRAkFAxdEN4IoN4ihwwV1ttBLWPlHc4</string>
+    <string name="hint_username">Username</string>
 </resources>
