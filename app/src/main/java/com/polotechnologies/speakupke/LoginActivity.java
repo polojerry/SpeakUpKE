@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_UP);
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -111,10 +111,15 @@ public class LoginActivity extends AppCompatActivity {
                 // response.getError().getErrorCode() and handle the error.
                 // ...
 
-                if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show();
-                } else {
+                if (response == null){
                     Toast.makeText(this, "Cancelled by User", Toast.LENGTH_SHORT).show();
+                }else{
+
+                    switch (response.getError().getErrorCode()){
+                        case ErrorCodes.NO_NETWORK:
+                            Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
             }
         }
