@@ -89,7 +89,6 @@
         android:layout_marginTop="20dp"
         android:text="@string/hint_sign_up"
         android:textAllCaps="false"
-        android:elevation="8dp"
         app:layout_constraintEnd_toEndOf="@+id/forgot_password"
         app:layout_constraintTop_toBottomOf="@+id/forgot_password" />
 
