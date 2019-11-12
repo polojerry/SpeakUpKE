@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String userNumber = mPhoneNumber.getText().toString().trim();
         String userPassword = mPassword.getText().toString().trim();
-        
+
     }
 
 
@@ -91,78 +91,32 @@ public class LoginActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_UP);
     }
-
-    /*
-    private void signIn() {
-
-        // Choose authentication providers
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.PhoneBuilder().build());
-
-        // Create and launch sign-in intent
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .build(),
-                RC_SIGN_IN);
-    }
-    */
-
-
-
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         IdpResponse response = IdpResponse.fromResultIntent(data);
 
-        switch (requestCode) {
-            case RC_SIGN_UP:
+        if (requestCode == RC_SIGN_UP) {
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                Intent openSignUpActivity = new Intent(LoginActivity.this, SignUpActivity.class);
+                openSignUpActivity.putExtra("uId", user.getUid());
+                startActivity(openSignUpActivity);
+                // ...
+            } else {
+                // Sign in failed. If response is null the user canceled the
+                // sign-in flow using the back button. Otherwise check
+                // response.getError().getErrorCode() and handle the error.
+                // ...
 
-                if (resultCode == RESULT_OK) {
-                    // Successfully signed in
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    Intent openSignUpActivity = new Intent(LoginActivity.this, SignUpActivity.class);
-                    openSignUpActivity.putExtra("uId", user.getUid());
-                    startActivity(openSignUpActivity);
-                    // ...
+                if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Sign in failed. If response is null the user canceled the
-                    // sign-in flow using the back button. Otherwise check
-                    // response.getError().getErrorCode() and handle the error.
-                    // ...
-
-                    if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-                        Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Cancelled by User", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(this, "Cancelled by User", Toast.LENGTH_SHORT).show();
                 }
-                break;
-
-                /*
-            case RC_SIGN_IN:
-
-                if (resultCode == RESULT_OK) {
-                    // Successfully signed in
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    Intent openMainActivity = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(openMainActivity);
-                    // ...
-                } else {
-                    // Sign in failed. If response is null the user canceled the
-                    // sign-in flow using the back button. Otherwise check
-                    // response.getError().getErrorCode() and handle the error.
-                    // ...
-
-                    if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-                        Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Cancelled by User", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                break;
-                */
+            }
         }
 
     }
