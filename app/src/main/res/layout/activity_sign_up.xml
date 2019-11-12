@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/sign_up_speak_up_logo"
         android:layout_width="match_parent"
         android:layout_height="116dp"
@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,15 +28,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_up_speak_up_logo">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/username_sign_up"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/hint_username" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,16 +48,16 @@
         app:passwordToggleDrawable="@drawable/toggle_pass"
         app:passwordToggleEnabled="true">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_sign_up"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/hint_password"
             android:inputType="textPassword" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_confirm_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,28 +69,40 @@
         app:passwordToggleDrawable="@drawable/toggle_pass"
         app:passwordToggleEnabled="true">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/confirm_password_sign_up"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/hint_password"
             android:inputType="textPassword" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/sign_up_button"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/circular_button"
+        android:layout_marginEnd="20dp"
         android:text="@string/hint_sign_up"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toStartOf="@+id/sign_up_login_button"
+        app:layout_constraintTop_toBottomOf="@+id/layout_confirm_password"
+        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sign_up_login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/hint_login"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_confirm_password" />
-
+        app:layout_constraintTop_toBottomOf="@+id/layout_confirm_password"
+        />
 
     <ProgressBar
         android:id="@+id/signUpProgressBar"
@@ -102,4 +114,4 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
