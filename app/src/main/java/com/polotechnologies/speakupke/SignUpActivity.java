@@ -100,6 +100,7 @@ public class SignUpActivity extends AppCompatActivity {
                 username
         );
 
+        assert id != null;
         mDatabaseReference.child(id).setValue(newUserSignUP).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
