@@ -72,31 +72,9 @@ public class LoginActivity extends AppCompatActivity {
 
         String userNumber = mPhoneNumber.getText().toString().trim();
         String userPassword = mPassword.getText().toString().trim();
-
-        signUserIn(userNumber, userPassword);
-
+        
     }
 
-    private void signUserIn(String userNumber, String userPassword) {
-
-        if (userNumber.equals("+254790689212") && userPassword.equals("jeremiahPolo")){
-            Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
-            Intent openMainActivity = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(openMainActivity);
-            finish();
-
-        }else if (userNumber.equals("+254711339824") && userPassword.equals("jeremiah")){
-            Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
-            Intent openMainActivity = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(openMainActivity);
-            finish();
-        }else{
-            Toast.makeText(this, "Phone Number/ Password Incorrect", Toast.LENGTH_SHORT).show();
-            mPhoneNumber.setText("");
-            mPhoneNumber.requestFocus();
-            mPassword.setText("");
-        }
-    }
 
 
     private void signUp() {
