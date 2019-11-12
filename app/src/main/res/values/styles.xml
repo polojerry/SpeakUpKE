@@ -15,5 +15,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextAppearance">@color/colorAccent</item>
+        <item name="hintTextColor">@color/colorAccent</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="boxStrokeColor">@color/colorAccent</item>
+    </style>
+
 
 </resources>
