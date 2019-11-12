@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputEditText mPassword;
 
     final int RC_SIGN_UP = 1001;
-    final int RC_SIGN_IN = 1000;
+    //final int RC_SIGN_IN = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +67,10 @@ public class LoginActivity extends AppCompatActivity {
         }
         if (Objects.requireNonNull(mPassword.getText()).toString().isEmpty()){
             mPassword.setError("Required");
-            return;
         }
 
-        String userNumber = mPhoneNumber.getText().toString().trim();
-        String userPassword = mPassword.getText().toString().trim();
+        /*String userNumber = mPhoneNumber.getText().toString().trim();
+        String userPassword = mPassword.getText().toString().trim();*/
 
     }
 
@@ -80,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     private void signUp() {
 
         // Choose authentication providers
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
+        List<AuthUI.IdpConfig> providers = Collections.singletonList(
                 new AuthUI.IdpConfig.PhoneBuilder().build());
 
         // Create and launch sign-in intent
@@ -102,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 Intent openSignUpActivity = new Intent(LoginActivity.this, SignUpActivity.class);
+                assert user != null;
                 openSignUpActivity.putExtra("uId", user.getUid());
                 startActivity(openSignUpActivity);
                 // ...
@@ -115,10 +115,8 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(this, "Cancelled by User", Toast.LENGTH_SHORT).show();
                 }else{
 
-                    switch (response.getError().getErrorCode()){
-                        case ErrorCodes.NO_NETWORK:
-                            Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show();
-                            break;
+                    if (Objects.requireNonNull(response.getError()).getErrorCode() == ErrorCodes.NO_NETWORK) {
+                        Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
