@@ -1,4 +1,4 @@
-package com.polotechnologies.speakupke;
+package com.polotechnologies.speakupke.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.polotechnologies.speakupke.R;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.polotechnologies.speakupke;
+package com.polotechnologies.speakupke.ui;
 
 import android.content.Intent;
 
@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.polotechnologies.speakupke.DataModels.UserSignUp;
+import com.polotechnologies.speakupke.R;
 
 import java.util.Objects;
 

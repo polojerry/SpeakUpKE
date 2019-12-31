@@ -1,4 +1,4 @@
-package com.polotechnologies.speakupke;
+package com.polotechnologies.speakupke.ui;
 
 import android.Manifest;
 import android.content.Context;
@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.polotechnologies.speakupke.DataModels.ReportingModel;
+import com.polotechnologies.speakupke.R;
 
 public class ReportingActivity extends AppCompatActivity implements OnMapReadyCallback{
 

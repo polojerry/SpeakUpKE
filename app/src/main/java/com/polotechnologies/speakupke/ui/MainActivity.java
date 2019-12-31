@@ -1,4 +1,4 @@
-package com.polotechnologies.speakupke;
+package com.polotechnologies.speakupke.ui;
 
 import android.content.Intent;
 
@@ -9,6 +9,8 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.gridlayout.widget.GridLayout;
+
+import com.polotechnologies.speakupke.R;
 
 public class MainActivity extends AppCompatActivity {
 

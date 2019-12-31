@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".LoginActivity">
+            android:name=".ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,10 +24,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignUpActivity"
-            android:parentActivityName=".LoginActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ReportingActivity"/>
+            android:name=".ui.SignUpActivity"
+            android:parentActivityName=".ui.LoginActivity" />
+        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.ReportingActivity"/>
 
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key"/>
